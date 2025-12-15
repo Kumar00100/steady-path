@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { FloatingDisciplineButton } from "@/components/floating/FloatingDisciplineButton";
 import Index from "./pages/Index";
 import Routines from "./pages/Routines";
 import Coach from "./pages/Coach";
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppLayout>
+        <FloatingDisciplineButton />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
