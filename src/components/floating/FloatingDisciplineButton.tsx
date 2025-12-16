@@ -6,7 +6,9 @@ import {
   Utensils, 
   Activity,
   X,
-  Zap
+  Zap,
+  LayoutDashboard,
+  Settings
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -38,7 +40,7 @@ const MenuItem = ({
     <button
       onClick={onClick}
       className={cn(
-        "absolute flex flex-col items-center gap-1 transition-all duration-300 ease-out group",
+        "absolute flex flex-col items-center gap-1 transition-all duration-300 ease-out group z-50",
         isOpen ? "opacity-100 scale-100" : "opacity-0 scale-0 pointer-events-none"
       )}
       style={{
@@ -52,8 +54,8 @@ const MenuItem = ({
         className={cn(
           "flex items-center justify-center rounded-full shadow-lg transition-all duration-200",
           isPrimary
-            ? "w-16 h-16 bg-primary text-primary-foreground hover:scale-110"
-            : "w-12 h-12 bg-card border border-border text-foreground hover:bg-accent hover:scale-110"
+            ? "w-14 h-14 bg-primary text-primary-foreground hover:scale-110"
+            : "w-11 h-11 bg-card border border-border text-foreground hover:bg-accent hover:scale-110"
         )}
       >
         {icon}
@@ -85,15 +87,21 @@ export const FloatingDisciplineButton = () => {
       isPrimary: true 
     },
     { 
+      icon: <LayoutDashboard className="h-5 w-5" />, 
+      label: "Dashboard", 
+      angle: -135, 
+      path: "/" 
+    },
+    { 
       icon: <ListChecks className="h-5 w-5" />, 
       label: "Routines", 
-      angle: -145, 
+      angle: -180, 
       path: "/routines" 
     },
     { 
       icon: <Utensils className="h-5 w-5" />, 
       label: "Food", 
-      angle: -35, 
+      angle: -45, 
       path: "/food" 
     },
     { 
@@ -101,6 +109,12 @@ export const FloatingDisciplineButton = () => {
       label: "Activity", 
       angle: 0, 
       path: "/activity" 
+    },
+    { 
+      icon: <Settings className="h-5 w-5" />, 
+      label: "Settings", 
+      angle: 45, 
+      path: "/settings" 
     },
   ];
 
@@ -143,9 +157,8 @@ export const FloatingDisciplineButton = () => {
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "relative flex items-center gap-2 px-5 py-3 rounded-full shadow-xl transition-all duration-300",
-            "bg-primary text-primary-foreground hover:shadow-2xl",
-            isOpen && "rotate-0"
+            "relative flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-all duration-300",
+            "bg-primary text-primary-foreground hover:shadow-2xl"
           )}
         >
           <div
@@ -155,12 +168,11 @@ export const FloatingDisciplineButton = () => {
             )}
           >
             {isOpen ? (
-              <X className="h-5 w-5" />
+              <X className="h-6 w-6" />
             ) : (
-              <Zap className="h-5 w-5" />
+              <Zap className="h-6 w-6" />
             )}
           </div>
-          <span className="font-semibold text-sm">Discipline</span>
           
           {/* Pulse animation when closed */}
           {!isOpen && (
