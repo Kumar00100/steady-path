@@ -76,6 +76,9 @@ const MenuItem = ({
 
 export const FloatingDisciplineButton = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const navigate = useNavigate();
 
   const menuItems = [
@@ -119,8 +122,56 @@ export const FloatingDisciplineButton = () => {
   ];
 
   const handleItemClick = (path: string) => {
+    if (isDragging) return;
     setIsOpen(false);
     navigate(path);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (isOpen) return;
+    setIsDragging(false);
+    setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+    
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      setIsDragging(true);
+      setPosition({
+        x: moveEvent.clientX - dragStart.x,
+        y: moveEvent.clientY - dragStart.y
+      });
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      setTimeout(() => setIsDragging(false), 100);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (isOpen) return;
+    const touch = e.touches[0];
+    setDragStart({ x: touch.clientX - position.x, y: touch.clientY - position.y });
+    
+    const handleTouchMove = (moveEvent: TouchEvent) => {
+      setIsDragging(true);
+      const moveTouch = moveEvent.touches[0];
+      setPosition({
+        x: moveTouch.clientX - dragStart.x,
+        y: moveTouch.clientY - dragStart.y
+      });
+    };
+
+    const handleTouchEnd = () => {
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+      setTimeout(() => setIsDragging(false), 100);
+    };
+
+    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleTouchEnd);
   };
 
   return (
@@ -135,7 +186,10 @@ export const FloatingDisciplineButton = () => {
       />
 
       {/* Floating Menu Container */}
-      <div className="fixed bottom-24 right-6 md:bottom-8 md:right-8 z-50">
+      <div 
+        className="fixed bottom-24 right-10 md:bottom-8 md:right-12 z-50"
+        style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
+      >
         {/* Menu Items */}
         <div className="relative">
           {menuItems.map((item, index) => (
@@ -155,10 +209,13 @@ export const FloatingDisciplineButton = () => {
 
         {/* Main FAB Button */}
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => !isDragging && setIsOpen(!isOpen)}
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
           className={cn(
-            "relative flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-all duration-300",
-            "bg-primary text-primary-foreground hover:shadow-2xl"
+            "relative flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-all duration-300 cursor-grab active:cursor-grabbing",
+            "bg-primary text-primary-foreground hover:shadow-2xl",
+            isDragging && "scale-105"
           )}
         >
           <div
