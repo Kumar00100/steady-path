@@ -8,7 +8,8 @@ import {
   X,
   Zap,
   LayoutDashboard,
-  Settings
+  Settings,
+  Dumbbell
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -108,15 +109,21 @@ export const FloatingDisciplineButton = () => {
       path: "/food" 
     },
     { 
+      icon: <Dumbbell className="h-5 w-5" />, 
+      label: "Workout", 
+      angle: 0, 
+      path: "/workout" 
+    },
+    { 
       icon: <Activity className="h-5 w-5" />, 
       label: "Activity", 
-      angle: 0, 
+      angle: 45, 
       path: "/activity" 
     },
     { 
       icon: <Settings className="h-5 w-5" />, 
       label: "Settings", 
-      angle: 45, 
+      angle: 90, 
       path: "/settings" 
     },
   ];
