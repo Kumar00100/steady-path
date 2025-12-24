@@ -10,6 +10,7 @@ import Routines from "./pages/Routines";
 import Coach from "./pages/Coach";
 import FoodLog from "./pages/FoodLog";
 import Activity from "./pages/Activity";
+import Workout from "./pages/Workout";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/coach" element={<Coach />} />
             <Route path="/food" element={<FoodLog />} />
             <Route path="/activity" element={<Activity />} />
+            <Route path="/workout" element={<Workout />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
